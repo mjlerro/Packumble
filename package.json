@@ -1,0 +1,22 @@
+{
+  "name": "packumble",
+  "version": "1.0.0",
+  "description": "A matching service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CSC-WebApps/Packumble.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CSC-WebApps/Packumble/issues"
+  },
+  "homepage": "https://github.com/CSC-WebApps/Packumble#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
