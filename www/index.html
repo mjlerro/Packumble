@@ -22,7 +22,7 @@
 
     <h1>Packumble</h1>
 
-    <div class="d-flex flex-row mb-3 justify-content-evenly">
+    <div id="   " class="d-flex flex-row mb-3 justify-content-evenly">
         <div class="p-2 card ">
             <div class="card-body">
                 <h5 class="card-title">Card title</h5>
@@ -58,17 +58,15 @@
 
 $(function() {
  
-    fetch('/users')
-        .then( response => response.json() )
-        .then( data => {
-          let users = ""
-          for (var user of data )
-          {
-              users += `<option value="${user}">${user}</option>`;
-          }
-          $('#users').append(users);
-        });
+    document.addEventListener('keydown', function(event) {
+        const key = event.key; // "ArrowRight", "ArrowLeft", "ArrowUp", or "ArrowDown"
+        if( key == "ArrowLeft" ) {
+            $(".card").remove();
+        }
+        else if ( key == "ArrowRight" ) {
 
+        }
+    });
 
 });
   </script>
