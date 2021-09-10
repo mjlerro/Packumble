@@ -1,33 +1,58 @@
-const express = require('express')
+const express = require('express');
 const app = express()
-const port = 3030
+const port = 3030;
+
+const generateUsers = require('./lib/data');
+
+app.use(express.urlencoded({extended:true}));
 
 // Serve static html/js/css content publically
 app.use(express.static('www'));
 
-const users = [
-    "Addison", "Ful", "Mouad", "Devon", "Michael",
-    "Lorenzo", "Alex", "Michael", "Scott", "Chris",
-    "Phil", "Tj", "Ryan", "Alex", "Kylee", "Emily",
-    "Justin", "Josiah", "Samantha", "Samanta",
-    "Geoffrey", "Joshua", "Abby", "Caleb",
-    "Drew", "Kacey", "Jeremy", "Taejoon",
-    "Michael", "Marcus", "Jim", "Keagan", "Sudhanshu", "Rene",
-    "Colton", "Austin", "Tyler", "Rishi", "Neel",
-    "Parin", "Aaron", "Nicholas", "Bryce", "Sam",
-    "Brian", "Alex", "TJ", "Travis", "Eve", "Zhonghe", "Tyler"
-];
+// Initialize application
+let data = [];
+let me = {};
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+app.post('/start', (req, res) => {
+
+  data = generateUsers();
+  console.log( req.body );
+  me.username = req.body.username;
+  me.language = req.body.language;
+  res.redirect(`match.html?name=${me.username}`);
 })
 
-app.get('/users', (req, res) => {
+// Get next card
+app.get('/see', (req, res) => {
 
-    console.log("/users");
-    res.json(users);
-})
-  
+  if( data.length > 0 )
+  {
+    res.send( data[data.length-1] );  
+  }
+  else res.send({});
+
+});
+
+// Swipe left
+app.get('/no', (req, res) => {
+  data.pop();
+  res.send({});
+});
+
+// Swipe right, check if match
+app.get('/trymatch', (req, res) => {
+  let card = data.pop();
+  console.log(me);
+  console.log(card);
+  if( (card.language == me.language && card.match == true) ||
+      card.luck == true ) {
+
+    let email = Math.random().toString(36).substring(2);
+    res.send({match: true, email: `${email}@ncsu.edu` });
+  }
+  else res.send({match: false });
+
+});
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
