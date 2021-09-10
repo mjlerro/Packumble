@@ -1,2 +1,5 @@
 # Packumble
-A matching service
+
+> A teammate matching service.
+
+![demo](packumble.gif)
