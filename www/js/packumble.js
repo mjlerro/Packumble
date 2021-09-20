@@ -7,13 +7,49 @@ function setup() {
     let card = $("#potentialmatch")[0];
     card.addEventListener("transitionend",() => {
         card.remove();
+
+        fetch("/no").then( _ =>{
+          fetch('/see')
+          .then( response => response.json() )
+          .then( card => {
+            createCard( card );
+          });
+        });
     });
 
     card.classList.add("swipeleft");
   });
 
   $('#rightbtn').click(function() {
-
+    let card = $("#potentialmatch")[0];
+    fetch("/trymatch")
+    .then( response => response.json() )
+    .then( data => {
+      console.log(data.match);
+      if ( data.match == false ) {
+        card.addEventListener("transitionend",() => {
+          card.remove();
+          fetch('/see')
+          .then( response => response.json() )
+          .then( card => {
+            createCard( card );
+          });
+        });
+        card.classList.add("swiperight");
+      } else if ( data.match == true ) {
+        card.addEventListener("animationend",() => {
+          $("#matcharea").append(card);
+          card.classList.remove("fire");
+          fetch('/see')
+          .then( response => response.json() )
+          .then( card => {
+            createCard( card );
+            flipFunctionality(data.email);
+          });
+        });
+        card.classList.add("fire");
+      }
+    });
 
   });
 
@@ -26,7 +62,7 @@ function setup() {
 
   // Set user name
   const params = new URLSearchParams(window.location.search);
-
+  $("#username").text(params.get("name"));
 }
 
 function createCard(card) {
@@ -45,4 +81,19 @@ function createCard(card) {
   </div>
   `;
 
+  $("#potentialmatch-container").append( template );
+}
+
+// Adds flipping functionality to matched cards with email on the back
+function flipFunctionality(email) {
+  let allCards = [];
+  $("#matcharea").children().each((i, card) => {
+    allCards.push(card);
+  });
+  allCards.forEach((card, i) => {
+    card.getElementsByClassName("card__face card__face--back")[0].innerHTML = email;
+    card.addEventListener("click", function() {
+      card.classList.toggle("is-flipped");
+    });
+  });
 }
