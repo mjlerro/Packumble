@@ -1,6 +1,8 @@
 # Packumble
 Bumble... But for the NCSU Wolfpack!
 
+On master branch
+
 Run on node.js:
 
 `npm install`
